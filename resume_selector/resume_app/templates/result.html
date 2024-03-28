@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Analysis Result</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .result-heading {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .flagged {
+            color: red;
+        }
+        .not-flagged {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card p-4">
+            <div class="card-body">
+                <h1 class="text-center mb-4">Resume Analysis Result</h1>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h2 class="result-heading">Feedback</h2>
+                                <ul>
+                                    {% for section, suggestion in feedback.items %}
+                                        <li>{{ section }}: {{ suggestion }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h2 class="result-heading">Prediction</h2>
+                                <p class="{% if prediction_info.Prediction == 'Flagged' %} flagged {% else %} not-flagged {% endif %}">{{ prediction_info.Prediction }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h2 class="result-heading">Prediction Analysis</h2>
+                                <ul>
+                                    <li>Not Flagged: {{ prediction_info.Prediction_Probability.Not_Flagged }}</li>
+                                    <li>Flagged: {{ prediction_info.Prediction_Probability.Flagged }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h2 class="result-heading">Explanation</h2>
+                                <p>{{ prediction_info.Explanation }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

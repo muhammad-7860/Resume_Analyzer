@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Resume</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Roboto', sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: 'Roboto', sans-serif;
+        }
+        .custom-file-label::after {
+            content: "Choose file";
+        }
+        .custom-file-input:lang(en)~.custom-file-label::after {
+            content: "Browse";
+        }
+        #resumeDisplay {
+            margin-top: 20px;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card p-4">
+            <h1 class="text-center mb-4">Upload Your Resume</h1>
+            <form action="{% url 'upload_resume' %}" id="uploadForm" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="resumeInput" name="resume" accept=".pdf">
+                    <label class="custom-file-label" for="resumeInput">Choose file</label>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Upload</button>
+            </form>
+            <div id="resumeDisplay" class="text-center"></div>
+        </div>
+    </div>
+
+    <script>
+        // Function to display the chosen file
+        document.getElementById('resumeInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const resumeDisplay = document.getElementById('resumeDisplay');
+                const embed = document.createElement('embed');
+                embed.src = e.target.result;
+                embed.width = "800";
+                embed.height = "600";
+                embed.type = "application/pdf";
+
+                // Clear previous file display
+                while (resumeDisplay.firstChild) {
+                    resumeDisplay.removeChild(resumeDisplay.lastChild);
+                }
+
+                // Append the new file display
+                resumeDisplay.appendChild(embed);
+            };
+
+            reader.readAsDataURL(file);
+        });
+    </script>
+</body>
+</html>
